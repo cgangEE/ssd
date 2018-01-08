@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from __future__ import print_function
 import sys, os
 import argparse
@@ -7,7 +8,9 @@ curr_path = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(os.path.join(curr_path, '..'))
 from dataset.pascal_voc import PascalVoc
 from dataset.mscoco import Coco
+from dataset.psdb import Psdb
 from dataset.concat_db import ConcatDB
+
 
 def load_pascal(image_set, year, devkit_path, shuffle=False, class_names=None, true_negative=None):
     """
@@ -72,6 +75,13 @@ def load_coco(image_set, dirname, shuffle=False):
     else:
         return imdbs[0]
 
+
+
+def load_psdb(image_set, dirname, shuffle=False, class_names = None):
+
+    return Psdb(image_set, dirname, shuffle, is_train=True, class_names=class_names) 
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Prepare lists for dataset')
     parser.add_argument('--dataset', dest='dataset', help='dataset to use',
@@ -100,6 +110,15 @@ if __name__ == '__main__':
     if args.class_names is not None:
         assert args.target is not None, 'for a subset of classes, specify a target path. Its for your own safety'
     if args.dataset == 'pascal':
+
+        print('args.set = {}'.format(args.set))
+        print('args.year = {}'.format(args.year))
+        print('args.root_path = {}'.format(args.root_path))
+        print('args.shuffle = {}'.format(args.shuffle))
+        print('args.class_names = {}'.format(args.class_names))
+        print('args.true_negative = {}'.format(args.true_negative))
+        print('args.target = {}'.format(args.target))
+
         db = load_pascal(args.set, args.year, args.root_path, args.shuffle, args.class_names, args.true_negative)
         print("saving list to disk...")
         db.save_imglist(args.target, root=args.root_path)
@@ -107,15 +126,22 @@ if __name__ == '__main__':
         db = load_coco(args.set, args.root_path, args.shuffle)
         print("saving list to disk...")
         db.save_imglist(args.target, root=args.root_path)
+    elif args.dataset == 'psdb':
+        print(args.set)
+        print(args.root_path)
+        print(args.shuffle)
+        db = load_psdb(args.set, args.root_path, args.shuffle)
+        db.save_imglist(args.target, root=args.root_path)
     else:
         raise NotImplementedError("No implementation for dataset: " + args.dataset)
 
     print("List file {} generated...".format(args.target))
 
-    im2rec_path = os.path.join(mxnet.__path__[0], 'tools/im2rec.py')
+    im2rec_path = os.path.join('/home/cgangee/code/mxnet', 'tools/im2rec.py')
     # final validation - sometimes __path__ (or __file__) gives 'mxnet/python/mxnet' instead of 'mxnet'
     if not os.path.exists(im2rec_path):
-        im2rec_path = os.path.join(os.path.dirname(os.path.dirname(mxnet.__path__[0])), 'tools/im2rec.py')
+        im2rec_path = os.path.join('/home/cgangee/code/mxnet', 'tools/im2rec.py')
+
     subprocess.check_call(["python", im2rec_path,
         os.path.abspath(args.target), os.path.abspath(args.root_path),
         "--shuffle", str(int(args.shuffle)), "--pack-label", "1"])

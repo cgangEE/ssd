@@ -38,10 +38,10 @@ class Detector(object):
         load_symbol, args, auxs = mx.model.load_checkpoint(model_prefix, epoch)
         if symbol is None:
             symbol = load_symbol
-        self.mod = mx.mod.Module(symbol, label_names=None, context=ctx)
+        self.mod = mx.mod.Module(symbol,  label_names = None,  context=ctx)
         self.data_shape = data_shape
         self.mod.bind(data_shapes=[('data', (batch_size, 3, data_shape, data_shape))])
-        self.mod.set_params(args, auxs)
+        self.mod.set_params(args, auxs, allow_missing=True)
         self.data_shape = data_shape
         self.mean_pixels = mean_pixels
 
@@ -59,6 +59,7 @@ class Detector(object):
         result = []
 
         det = output[0, :, :]
+        print('ft', det.shape)
         res = det[np.where( det[:, 0] >= 0)[0]]
 
         return res

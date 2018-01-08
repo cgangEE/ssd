@@ -1,6 +1,6 @@
 """Presets for various network configurations"""
 import logging
-from symbol import symbol_builder
+from symbol import symbol_builder_mobi
 import numpy as np
 
 def get_scales(min_scale=0.2, max_scale=0.9,num_layers=6):
@@ -151,6 +151,17 @@ def get_config(network, data_shape, **kwargs):
         normalizations = -1
         steps = []
         return locals()
+    elif network == 'mobilenetLess':
+        from_layers = ['conv_12_relu', 'conv_14_relu', '', '', '', '']
+        num_filters = [-1, 1024, 1024, 1024, 1024, 1024]
+        strides = [-1, -1, 2, 2, 2, 2]
+        pads = [-1, -1, 1, 1, 1, 1]
+        sizes = get_scales(min_scale=0.15, max_scale=0.9, num_layers=len(from_layers))
+        ratios = [[1,2,.5], [1,2,.5,3,1./3], [1,2,.5,3,1./3], [1,2,.5,3,1./3], \
+                  [1,2,.5,3,1./3], [1,2,.5]]
+        normalizations = -1
+        steps = []
+        return locals()
     elif network == 'densenet121':
         network = 'densenet'
         data_type = 'imagenet'
@@ -199,14 +210,14 @@ def get_symbol_train(network, data_shape, **kwargs):
     data_shape : int
         input shape
     kwargs : dict
-        see symbol_builder.get_symbol_train for more details
+        see symbol_builder_mobi.get_symbol_train for more details
     """
     if network.startswith('legacy'):
         logging.warn('Using legacy model.')
-        return symbol_builder.import_module(network).get_symbol_train(**kwargs)
+        return symbol_builder_mobi.import_module(network).get_symbol_train(**kwargs)
     config = get_config(network, data_shape, **kwargs).copy()
     config.update(kwargs)
-    return symbol_builder.get_symbol_train(**config)
+    return symbol_builder_mobi.get_symbol_train(**config)
 
 def get_symbol(network, data_shape, **kwargs):
     """Wrapper for get symbol for test
@@ -218,11 +229,11 @@ def get_symbol(network, data_shape, **kwargs):
     data_shape : int
         input shape
     kwargs : dict
-        see symbol_builder.get_symbol for more details
+        see symbol_builder_mobi.get_symbol for more details
     """
     if network.startswith('legacy'):
         logging.warn('Using legacy model.')
-        return symbol_builder.import_module(network).get_symbol(**kwargs)
+        return symbol_builder_mobi.import_module(network).get_symbol(**kwargs)
     config = get_config(network, data_shape, **kwargs).copy()
     config.update(kwargs)
-    return symbol_builder.get_symbol(**config)
+    return symbol_builder_mobi.get_symbol(**config)

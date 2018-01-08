@@ -4,7 +4,7 @@ import mxnet as mx
 import argparse
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'symbol'))
-import symbol_factory
+import symbol_factory_mobi
 
 def parse_args():
     parser = argparse.ArgumentParser(description='network visualization')
@@ -32,9 +32,9 @@ def net_visualization(network=None,
     # if you specify your net, this means that you are calling this function from somewhere else..
     if net is None:
         if not train:
-            net = symbol_factory.get_symbol(network, data_shape, num_classes=num_classes)
+            net = symbol_factory_mobi.get_symbol(network, data_shape, num_classes=num_classes)
         else:
-            net = symbol_factory.get_symbol_train(network, data_shape, num_classes=num_classes)
+            net = symbol_factory_mobi.get_symbol_train(network, data_shape, num_classes=num_classes)
 
     if not train:
         a = mx.viz.plot_network(net, shape={"data": (1, 3, data_shape, data_shape)}, \

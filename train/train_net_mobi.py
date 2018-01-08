@@ -9,9 +9,9 @@ from dataset.iterator import DetRecordIter
 from train.metric import MultiBoxMetric
 from evaluate.eval_metric import MApMetric, VOC07MApMetric
 from config.config import cfg
-from symbol.symbol_factory import get_symbol_train
+from symbol.symbol_factory_mobi import get_symbol_train
 from evaluate.custom_callbacks import LogDistributionsCallback, LogROCCallback, ParseLogCallback, LogDetectionsCallback
-from tools.visualize_net import net_visualization
+from tools.visualize_net_mobi import net_visualization
 
 def convert_pretrained(name, args):
     """

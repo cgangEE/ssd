@@ -3,7 +3,7 @@ import argparse
 import mxnet as mx
 import os
 import sys
-from evaluate.evaluate_net import evaluate_net
+from evaluate.evaluate_net_mobi import evaluate_net
 
 
 def parse_args():
