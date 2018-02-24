@@ -1,3 +1,4 @@
+output/*
 # User defined
 data/*
 !data/demo/
