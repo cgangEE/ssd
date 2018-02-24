@@ -65,8 +65,13 @@ def get_symbol_train(network, num_classes, from_layers, num_filters, strides, pa
     """
     label = mx.sym.Variable('label')
     body = import_module(network).get_symbol(num_classes=num_classes, **kwargs)
-    layers = multi_layer_feature_mobi(body, from_layers, num_filters, strides, pads,
-        min_filter=min_filter)
+
+    if network == 'mobilenetLess':
+        layers = multi_layer_feature_mobi(body, from_layers, num_filters, strides, pads,
+            min_filter=min_filter)
+    else:
+        layers = multi_layer_feature(body, from_layers, num_filters, strides, pads,
+            min_filter=min_filter)
 
     loc_preds, cls_preds, anchor_boxes = multibox_layer(layers, \
         num_classes, sizes=sizes, ratios=ratios, normalization=normalizations, \

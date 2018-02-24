@@ -1,0 +1,59 @@
+network=mobilenet
+args.rec_path=/Users/cgangee/code/ssd/data/psdb/val.rec
+num_class=4
+args.mean_r=123
+args.mean_g=117
+args.mean_b=104
+args.data_shape=300
+prefix=/Users/cgangee/code/ssd/output/psdbMobileNet/ssd
+args.epoch=240
+ctx=cpu(0)
+batch_size=1
+path_imglist=
+nms_thresh=0.45
+force_nms=False
+ovp_thresh=0.5
+use_difficult=False
+class_names=['pedestrian', 'head', 'head-shouler', 'upper-body']
+voc07_metric=True
+frequent=20
+[15:42:54] src/io/iter_image_det_recordio.cc:281: ImageDetRecordIOParser: /Users/cgangee/code/ssd/data/psdb/val.rec, use 1 threads for decoding..
+[15:42:54] /Users/travis/build/dmlc/mxnet-distro/mxnet-build/dmlc-core/include/dmlc/logging.h:308: [15:42:54] src/io/input_split_base.cc:173: Check failed: files_.size() != 0U (0 vs. 0) Cannot find any files that matches the URI pattern /Users/cgangee/code/ssd/data/psdb/val.rec
+
+Stack trace returned 10 entries:
+[bt] (0) 0   libmxnet.so                         0x0000000101018a98 _ZN4dmlc15LogMessageFatalD2Ev + 40
+[bt] (1) 1   libmxnet.so                         0x000000010230dd46 _ZN4dmlc2io14InputSplitBase17InitInputFileInfoERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEb + 1286
+[bt] (2) 2   libmxnet.so                         0x000000010230d693 _ZN4dmlc2io14InputSplitBase4InitEPNS0_10FileSystemEPKcmb + 115
+[bt] (3) 3   libmxnet.so                         0x000000010231dca6 _ZN4dmlc10InputSplit6CreateEPKcS2_jjS2_bimb + 646
+[bt] (4) 4   libmxnet.so                         0x000000010231da15 _ZN4dmlc10InputSplit6CreateEPKcjjS2_ + 37
+[bt] (5) 5   libmxnet.so                         0x0000000101fda72d _ZN5mxnet2io22ImageDetRecordIOParserIfE4InitERKNSt3__16vectorINS3_4pairINS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESB_EENS9_ISC_EEEE + 1533
+[bt] (6) 6   libmxnet.so                         0x0000000101fd4ab6 _ZN5mxnet2io18ImageDetRecordIterIfE4InitERKNSt3__16vectorINS3_4pairINS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESB_EENS9_ISC_EEEE + 198
+[bt] (7) 7   libmxnet.so                         0x0000000101fde625 _ZN5mxnet2io21ImageDetNormalizeIter4InitERKNSt3__16vectorINS2_4pairINS2_12basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEESA_EENS8_ISB_EEEE + 197
+[bt] (8) 8   libmxnet.so                         0x0000000101fcbb09 _ZN5mxnet2io11BatchLoader4InitERKNSt3__16vectorINS2_4pairINS2_12basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEESA_EENS8_ISB_EEEE + 185
+[bt] (9) 9   libmxnet.so                         0x0000000101fcea58 _ZN5mxnet2io14PrefetcherIter4InitERKNSt3__16vectorINS2_4pairINS2_12basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEESA_EENS8_ISB_EEEE + 56
+
+Traceback (most recent call last):
+  File "./evaluate.py", line 115, in <module>
+    voc07_metric=args.use_voc07_metric, frequent=args.frequent)
+  File "/Users/cgangee/code/ssd/evaluate/evaluate_net.py", line 70, in evaluate_net
+    path_imglist=path_imglist, **cfg.valid)
+  File "/Users/cgangee/code/ssd/dataset/iterator.py", line 60, in __init__
+    **kwargs)
+  File "/Library/Python/2.7/site-packages/mxnet/io.py", line 932, in creator
+    ctypes.byref(iter_handle)))
+  File "/Library/Python/2.7/site-packages/mxnet/base.py", line 146, in check_call
+    raise MXNetError(py_str(_LIB.MXGetLastError()))
+mxnet.base.MXNetError: [15:42:54] src/io/input_split_base.cc:173: Check failed: files_.size() != 0U (0 vs. 0) Cannot find any files that matches the URI pattern /Users/cgangee/code/ssd/data/psdb/val.rec
+
+Stack trace returned 10 entries:
+[bt] (0) 0   libmxnet.so                         0x0000000101018a98 _ZN4dmlc15LogMessageFatalD2Ev + 40
+[bt] (1) 1   libmxnet.so                         0x000000010230dd46 _ZN4dmlc2io14InputSplitBase17InitInputFileInfoERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEEb + 1286
+[bt] (2) 2   libmxnet.so                         0x000000010230d693 _ZN4dmlc2io14InputSplitBase4InitEPNS0_10FileSystemEPKcmb + 115
+[bt] (3) 3   libmxnet.so                         0x000000010231dca6 _ZN4dmlc10InputSplit6CreateEPKcS2_jjS2_bimb + 646
+[bt] (4) 4   libmxnet.so                         0x000000010231da15 _ZN4dmlc10InputSplit6CreateEPKcjjS2_ + 37
+[bt] (5) 5   libmxnet.so                         0x0000000101fda72d _ZN5mxnet2io22ImageDetRecordIOParserIfE4InitERKNSt3__16vectorINS3_4pairINS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESB_EENS9_ISC_EEEE + 1533
+[bt] (6) 6   libmxnet.so                         0x0000000101fd4ab6 _ZN5mxnet2io18ImageDetRecordIterIfE4InitERKNSt3__16vectorINS3_4pairINS3_12basic_stringIcNS3_11char_traitsIcEENS3_9allocatorIcEEEESB_EENS9_ISC_EEEE + 198
+[bt] (7) 7   libmxnet.so                         0x0000000101fde625 _ZN5mxnet2io21ImageDetNormalizeIter4InitERKNSt3__16vectorINS2_4pairINS2_12basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEESA_EENS8_ISB_EEEE + 197
+[bt] (8) 8   libmxnet.so                         0x0000000101fcbb09 _ZN5mxnet2io11BatchLoader4InitERKNSt3__16vectorINS2_4pairINS2_12basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEESA_EENS8_ISB_EEEE + 185
+[bt] (9) 9   libmxnet.so                         0x0000000101fcea58 _ZN5mxnet2io14PrefetcherIter4InitERKNSt3__16vectorINS2_4pairINS2_12basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEESA_EENS8_ISB_EEEE + 56
+

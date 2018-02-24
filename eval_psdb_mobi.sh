@@ -4,10 +4,10 @@ basepath=$(cd `dirname $0`; pwd)
 	--network mobilenet \
     --num-class 4 \
 	--data-shape 300 \
-	--gpus 0 \
+	--cpu \
 	--epoch 240 \
 	--batch-size 1 \
     --prefix ${basepath}/output/psdbMobileNet/ssd \
-    --class-names 'pedestrian, head, head-shouler, upper-body'  &> log_eval_psdb_mobi &
+    --class-names 'pedestrian, head, head-shouler, upper-body' # &> log_eval_psdb_mobi &
 
-	#--cpu \
+#--gpus 0 \

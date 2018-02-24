@@ -159,6 +159,7 @@ class DetIter(mx.io.DataIter):
         self.is_train = is_train
         self._rand_mirror = rand_mirror
         self._shuffle = shuffle
+
         if rand_seed:
             np.random.seed(rand_seed) # fix random seed
         self._max_crop_trial = max_crop_trial

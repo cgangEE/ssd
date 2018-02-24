@@ -162,6 +162,16 @@ def get_config(network, data_shape, **kwargs):
         normalizations = -1
         steps = []
         return locals()
+    elif network == 'mobilenetTmp':
+        from_layers = ['conv_1_batchnorm']
+        num_filters = [-1] 
+        strides = [-1]
+        pads = [-1]
+        sizes = get_scales(min_scale=0.15, max_scale=0.9, num_layers=len(from_layers))
+        ratios = [[1,2,.5]]
+        normalizations = -1
+        steps = []
+        return locals()
     elif network == 'densenet121':
         network = 'densenet'
         data_type = 'imagenet'

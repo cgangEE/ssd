@@ -44,6 +44,8 @@ class MApMetric(mx.metric.EvalMetric):
         self.pred_idx = int(pred_idx)
         self.roc_output_path = roc_output_path
         self.tensorboard_path = tensorboard_path
+        self.all_boxes = [[] for _ in xrange(self.num)]
+        
 
     def save_roc_graph(self, recall=None, prec=None, classkey=1, path=None, ap=None):
         if not os.path.exists(path):
@@ -134,12 +136,20 @@ class MApMetric(mx.metric.EvalMetric):
             ious = inters / uni
             ious[uni < 1e-12] = 0  # in case bad boxes
             return ious
+            
+        # _cg_ add
+        for i in range(self.num):
+            self.all_boxes[i].append([])
+        boxes_count = len(self.all_boxes[0])
+        # end _cg_ add
+
 
         # independant execution for each image
         for i in range(labels[0].shape[0]):
             # get as numpy arrays
             label = labels[0][i].asnumpy()
             pred = preds[self.pred_idx][i].asnumpy()
+
             # calculate for each class
             while (pred.shape[0] > 0):
                 cid = int(pred[0, 0])
@@ -152,6 +162,12 @@ class MApMetric(mx.metric.EvalMetric):
                 # sort by score, desceding
                 dets[dets[:,1].argsort()[::-1]]
                 records = np.hstack((dets[:, 1][:, np.newaxis], np.zeros((dets.shape[0], 1))))
+
+                # _cg_ add
+                self.all_boxes[cid][boxes_count - 1] = dets
+                # end _cg_ add
+
+
                 # ground-truths
                 label_indices = np.where(label[:, 0].astype(int) == cid)[0]
                 gts = label[label_indices, :]
@@ -297,6 +313,15 @@ class VOC07MApMetric(MApMetric):
         ----------
         ap as float
         """
+
+        # _cg_ add
+        import cPickle
+
+        with open('all_boxes.pkl', 'wb') as f:
+            cPickle.dump(self.all_boxes, f, cPickle.HIGHEST_PROTOCOL)
+
+        # end _cg_ add
+
         ap = 0.
         for t in np.arange(0., 1.1, 0.1):
             if np.sum(rec >= t) == 0:

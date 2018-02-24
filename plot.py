@@ -4,7 +4,7 @@ from symbol.symbol_factory_mobi import get_symbol
 import mxnet as mx
 
 def gao():
-    net = get_symbol('mobilenetLess', 300, 
+    net = get_symbol('mobilenetTmp', 300, 
             num_classes=4, nms_thresh=0.5, 
             force_suppres=True, nms_topk=400)
     data_shape = (1, 3, 300, 300)

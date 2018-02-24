@@ -59,7 +59,6 @@ class Detector(object):
         result = []
 
         det = output[0, :, :]
-        print('ft', det.shape)
         res = det[np.where( det[:, 0] >= 0)[0]]
 
         return res
